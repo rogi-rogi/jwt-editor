@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JWT Editor</title>
+  <link rel="stylesheet" href="./index.css" />
+  <script defer src="./crypto.js"></script>
+  <script defer src="./strings.js"></script>
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <div class="brand">
+        <div class="brand-badge">JWT</div>
+        <div class="brand-text">
+          <h1>JWT Editor</h1>
+          <p>토큰을 입력하고 헤더/페이로드를 수정한 뒤 재서명하세요.</p>
+        </div>
+      </div>
+      <div class="status" id="status">대기 중</div>
+    </header>
+
+    <main class="main">
+      <section class="token-panel">
+        <label class="label" for="jwtInput">JWT</label>
+        <div class="token-row">
+          <div class="token-wrap">
+            <div class="token-overlay" id="jwtOverlay" aria-hidden="true"></div>
+            <textarea
+              id="jwtInput"
+              class="token-input"
+              placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+              spellcheck="false"
+              autocomplete="off"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="token-actions">
+            <button class="icon-btn" id="openSecret" aria-label="시크릿 키 입력">
+              <span class="icon key" aria-hidden="true"></span>
+            </button>
+            <button class="ghost-btn" id="copyJwt">복사</button>
+          </div>
+        </div>
+        <p class="hint">JWT 입력 후 아래에서 헤더/페이로드를 수정하면 새 토큰이 자동 생성됩니다.</p>
+      </section>
+
+      <section class="decode-grid">
+        <div class="decode-panel header">
+          <div class="panel-title">Header</div>
+          <textarea id="headerJson" spellcheck="false"></textarea>
+        </div>
+        <div class="decode-panel payload">
+          <div class="panel-title">Payload</div>
+          <textarea id="payloadJson" spellcheck="false"></textarea>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="secretModal" aria-hidden="true">
+    <div class="modal-backdrop" id="closeSecret"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="secretTitle">
+      <button class="close-btn" id="closeSecretBtn" aria-label="닫기">×</button>
+      <h2 id="secretTitle">시크릿 키 입력</h2>
+      <div class="secret-field">
+        <input
+          id="secretInput"
+          type="password"
+          placeholder="시크릿 키"
+          autocomplete="off"
+        />
+        <button class="icon-btn" id="toggleSecret" aria-label="시크릿 키 보기">
+          <span class="icon eye-closed" id="eyeIcon" aria-hidden="true"></span>
+        </button>
+      </div>
+      <p class="modal-hint">헤더의 alg 값을 기준으로 HMAC 서명을 생성합니다.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+</body>
+</html>
